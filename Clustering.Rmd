@@ -93,7 +93,7 @@ The animation below sequentially showcases the following key stages of the DBSCA
 
 **Epsilon Neighborhoods for All Core Points**: The final segment extends the ε-neighborhood visualization to all core points in the dataset. This comprehensive view illustrates the clustering process across the entire dataset, showing how individual clusters are formed based on core and directly reachable points. It also visually represents noise points or outliers that do not belong to any cluster.
 
-![Process of DBSCAN](dbscan_animation.gif)
+![Process of DBSCAN](GIF/dbscan_animation.gif)
 
 ___
 

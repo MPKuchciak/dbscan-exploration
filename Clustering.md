@@ -33,31 +33,6 @@ January 2024
 
 ------------------------------------------------------------------------
 
-- Abstract
-- Introduction
-  - Overview of Clustering in Unsupervised Learning
-  - Significance of DBSCAN
-- Methodology
-  - Understanding DBSCAN
-    - Core Concepts
-    - Reachability and Connectivity
-    - Visualization of DBSCAN
-  - Selection of Synthetic Dataset
-- Results and Analysis
-  - Exploration of eps and minPts
-    - Effects of Varying eps
-    - Influence of minPts on cluster formation
-  - First optimization
-  - Normalization and Its Impact
-- Discussion
-  - Insights and Implications of Findings
-  - Challenges and Limitations Encountered
-- Conclusion
-  - Summary of Key Findings
-  - Future Research Directions
-
-------------------------------------------------------------------------
-
 ## Abstract
 
 This study focuses on the exploration of DBSCAN (Density-Based Spatial
@@ -95,8 +70,6 @@ significant challenges in real-world data analysis.
 ------------------------------------------------------------------------
 
 ## Methodology
-
-------------------------------------------------------------------------
 
 ### Understanding DBSCAN
 
@@ -178,7 +151,7 @@ directly reachable points. It also visually represents noise points or
 outliers that do not belong to any cluster.
 
 <figure>
-<img src="dbscan_animation.gif" alt="Process of DBSCAN" />
+<img src="GIF/dbscan_animation.gif" alt="Process of DBSCAN" />
 <figcaption aria-hidden="true">Process of DBSCAN</figcaption>
 </figure>
 
@@ -297,11 +270,7 @@ successfully.
 
 ## Results and Analysis
 
-------------------------------------------------------------------------
-
 ### Exploration of eps and minPts
-
-------------------------------------------------------------------------
 
 #### Effects of Varying eps
 
@@ -394,8 +363,6 @@ recommended in the future)
 
 ## Discussion
 
-------------------------------------------------------------------------
-
 ### Insights and Implications of Findings
 
 The application of DBSCAN to normalized data (also to non-normalized
@@ -427,8 +394,6 @@ speed of algorithm and its scalability based on this research.
 ------------------------------------------------------------------------
 
 ## Conclusion
-
-------------------------------------------------------------------------
 
 ### Summary of Key Findings
 
