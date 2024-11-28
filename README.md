@@ -4,6 +4,8 @@
 ### Date: January 2024
 
 [DBSCAN Technique Exploration RPubs link](https://rpubs.com/TusVasMit/DBSCANExploration)
+
+[GitHub Pages link to project](https://mpkuchciak.github.io/DBSCAN/)
 ---
 
 ## Overview
