@@ -1,6 +1,3 @@
-DBSCAN: Density-Based Spatial Clustering of Applications with Noise,
-Technique Exploration
-================
 Maciej Kuchciak
 January 2024
 
@@ -47,7 +44,7 @@ of the technique will be used for This research.
 The methodology includes a parameter optimization process highlighting
 the sensitivity of DBSCAN to the used parameters (epsilon and minPts).
 
-------------------------------------------------------------------------
+
 
 ## Introduction
 
@@ -58,7 +55,7 @@ It involves organizing a set of objects to ensure that items in the same
 group, or cluster, are more similar to each other than to those in other
 groups or clusters.
 
-------------------------------------------------------------------------
+
 
 ### Significance of DBSCAN
 
@@ -67,7 +64,7 @@ stands out among clustering algorithms for its ability to find arbitrary
 shaped clusters and its robustness to outliers, which often pose
 significant challenges in real-world data analysis.
 
-------------------------------------------------------------------------
+
 
 ## Methodology
 
@@ -80,7 +77,7 @@ or density threshold alone. Its effectiveness in identifying outliers or
 noise and its requirement of only two parameters (epsilon (ε) and
 minimum points (minPts)) make it versatile and widely applicable.
 
-------------------------------------------------------------------------
+
 
 #### Core Concepts
 
@@ -111,7 +108,7 @@ points, possibly except for q.
 from any other point based on the specified parameters of the clustering
 algorithm are considered noise or outliers.
 
-------------------------------------------------------------------------
+
 
 #### Reachability and Connectivity
 
@@ -125,7 +122,7 @@ point from which both are reachable, based on the direct reachability
 criterion. This concept ensures that all points in a cluster are
 mutually reachable, ensuring the cluster’s cohesion (compactness).
 
-------------------------------------------------------------------------
+
 
 #### Visualization of DBSCAN
 
@@ -155,7 +152,7 @@ outliers that do not belong to any cluster.
 <figcaption aria-hidden="true">Process of DBSCAN</figcaption>
 </figure>
 
-------------------------------------------------------------------------
+
 
 ### Selection of Synthetic Dataset
 
@@ -266,7 +263,7 @@ means the data is likely not uniformly distributed and has potential
 clusters. Which means that synthetic data for clustering was created
 successfully.
 
-------------------------------------------------------------------------
+
 
 ## Results and Analysis
 
@@ -290,7 +287,7 @@ true diversity and distribution of the data points.
 
 ![](Clustering_files/figure-gfm/eps%20high-1.png)<!-- -->
 
-------------------------------------------------------------------------
+
 
 #### Influence of minPts on Cluster Formation
 
@@ -323,7 +320,9 @@ using a k-distance graph with k set to minPts - 1 (3 in this case),
 identifying the “elbow” point to define the radius for neighborhood
 searches.
 
-![](Clustering_files/figure-gfm/elbow%20first%20optimal%20scan-1.png)<!-- -->![](Clustering_files/figure-gfm/elbow%20first%20optimal%20scan-2.png)<!-- -->
+![](Clustering_files/figure-gfm/elbow%20first%20optimal%20scan-1.png)<!-- -->
+
+![](Clustering_files/figure-gfm/elbow%20first%20optimal%20scan-2.png)<!-- -->
 
 As “elbow” point is not clear, the graph was zoomed in and then the
 epsilon was checked iteratively between values 1 and 2.5.
@@ -346,7 +345,9 @@ much).
 Firsly, the non-optimized version was run, and k-distance graph was
 checked for epsilon value.
 
-![](Clustering_files/figure-gfm/normalize%20k-distance-1.png)<!-- -->![](Clustering_files/figure-gfm/normalize%20k-distance-2.png)<!-- -->
+![](Clustering_files/figure-gfm/normalize%20k-distance-1.png)<!-- -->
+
+![](Clustering_files/figure-gfm/normalize%20k-distance-2.png)<!-- -->
 
 Based on the graph of k-distance, the values from range 0.01 to 0.2 were
 iteratively checked, for best outcome compared with synthetic dataset
@@ -361,7 +362,7 @@ for that, the results did not differ that much (usage of normal, based
 on real-life data datasets or with more sparsed data would be
 recommended in the future)
 
-------------------------------------------------------------------------
+
 
 ## Discussion
 
@@ -380,7 +381,7 @@ initially created with small margin of differences in distances between
 points so It Does not show the full potential of normalization and
 should be researched in future approaches.
 
-------------------------------------------------------------------------
+
 
 ### Challenges and Limitations Encountered
 
@@ -393,7 +394,7 @@ which may not always be readily available. The dataset was not that big
 so the processes were not taking much time; it is hard to evaluate the
 speed of algorithm and its scalability based on this research.
 
-------------------------------------------------------------------------
+
 
 ## Conclusion
 
@@ -409,7 +410,7 @@ significantly affect the outcomes, it supported fair feature
 representation and better parameter optimization (as mentioned earlier,
 to be researched in next attempts).
 
-------------------------------------------------------------------------
+
 
 ### Future Research Directions
 
