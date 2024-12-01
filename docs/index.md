@@ -250,7 +250,7 @@ unique colors, indicating distinct groupings within the data.
 Additionally, noise and outliers are also highlighted, with noise points
 depicted in light gray and outliers in dark gray
 
-<img src="Clustering_files/figure-gfm/plotting-1.png" width="100%" style="display: block; margin: auto;" />
+![](Clustering_files/figure-gfm/plotting-1.png)<!-- -->
 
 Additionaly Hopkins statistics was used to assess whether the data has a
 clustering tendency. The higher values the better.

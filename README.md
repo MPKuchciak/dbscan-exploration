@@ -28,12 +28,14 @@ dbscan-exploration/
 ├── .gitignore
 ├── Clustering.Rmd
 ├── docs/
-│   ├── _config.yml                # Jekyll config for GitHub Pages
-│   ├── Clustering.md              # Your main page
-│   ├── Clustering_files/          # Figures and generated files
-│   └── images/                    # Extra project images
+│   ├── index.md                 # Main page (formerly Clustering.md)
+│   ├── _config.yml              # Jekyll config for GitHub Pages
+│   ├── Clustering_files/        # Figures and generated files
+│   │   └── figure-gfm/
+│   │       └── plotting-1.png   # Images and figures
+│   ├── images/                  # Extra project images
 └── Clustering_files/
-    └── figure-gfm/                # Generated figures
+    └── figure-gfm/              # Generated figures
 ``` 
 
 ## Getting Started
