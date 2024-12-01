@@ -38,6 +38,38 @@ DBSCANExploration/
 │   ├── index.md                  # Main page for GitHub Pages site (based on Clustering.md)
 │   ├── _config.yml               # Jekyll configuration for GitHub Pages
 │   ├── Clustering_files/         # Auto-generated figures and images for GitHub Pages
-│   └── images/                   # Additional images for the website
+│   └── GIF/                   # Additional images for the website
 ├── images/                       # Extra project images (plots, figures, etc.)
 │   └── dbscan_clustering_example.gif # Animation illustrating the clustering process
+
+``` 
+
+## Getting Started
+
+To replicate this analysis, you need to install the required R packages and set up your environment:
+
+
+
+## Prerequisites:
+R (>= 4.0)
+RStudio (Optional but recommended)
+r
+Copy code
+
+
+
+## Install necessary packages
+if (!requireNamespace("Rtsne", quietly = TRUE)) install.packages("Rtsne")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("magick", quietly = TRUE)) install.packages("magick")
+
+
+
+## License
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). You are free to modify, share, and use this project under the terms of the GPL-3.0 license. If you distribute modified versions of this work, you must release them under the same license.
+
+
+
+## Contributing
+Contributions are welcome! If you have suggestions or improvements, feel free to open an issue or submit a pull request.
+
