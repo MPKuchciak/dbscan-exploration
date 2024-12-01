@@ -29,3 +29,11 @@ include:
   - docs
   - Clustering_files/figure-gfm
   - images
+
+# Set the home page to clustering.md instead of index.md
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+      permalink: "/"
