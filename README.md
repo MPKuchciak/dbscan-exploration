@@ -38,7 +38,7 @@ DBSCANExploration/
 │   ├── index.md                  # Main page for GitHub Pages site (based on Clustering.md)
 │   ├── _config.yml               # Jekyll configuration for GitHub Pages
 │   ├── Clustering_files/         # Auto-generated figures and images for GitHub Pages
-│   └── GIF/                   # Additional images for the website
+│   └── images/                   # Additional images for the website
 ├── images/                       # Extra project images (plots, figures, etc.)
 │   └── dbscan_clustering_example.gif # Animation illustrating the clustering process
 
