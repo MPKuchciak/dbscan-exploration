@@ -29,3 +29,6 @@ include:
   - docs
   - Clustering_files/figure-gfm
   - images
+
+# Use clustering.md as the homepage
+home: "/docs/Clustering.md"
