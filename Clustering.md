@@ -405,7 +405,9 @@ feature representation and helped the adjustment of the epsilon value
 for optimal clustering performance. While normalization did not
 significantly affect the outcomes, it supported fair feature
 representation and better parameter optimization (as mentioned earlier,
-to be researched in next attempts). \_\_\_
+to be researched in next attempts).
+
+------------------------------------------------------------------------
 
 ### Future Research Directions
 
