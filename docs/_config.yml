@@ -30,5 +30,5 @@ include:
   - Clustering_files/figure-gfm
   - images
 
-# Use clustering.md as the homepage
+# Set the homepage to docs/Clustering.md
 home: "/docs/Clustering.md"
