@@ -5,7 +5,7 @@
 
 [DBSCAN Technique Exploration RPubs link](https://rpubs.com/TusVasMit/DBSCANExploration)
 
-[GitHub Pages link to project](https://mpkuchciak.github.io/DBSCAN/)
+[GitHub Pages link to project](https://mpkuchciak.github.io/dbscan-exploration/)
 
 ## Overview
 
