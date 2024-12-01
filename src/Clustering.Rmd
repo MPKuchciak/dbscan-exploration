@@ -3,51 +3,17 @@ title: "DBSCAN: Density-Based Spatial Clustering of Applications with Noise, Tec
 author: "Maciej Kuchciak"
 date: "January 2024"
 output: 
-  html_document:
+  github_document:
     toc: true
-    toc_float: 
-      collapsed: true
-      smooth_scroll: True
-    toc_depth: 5
-    number_sections: FALSE
-    theme: readable
-    df_print: paged
+    toc_depth: 4
     fig_width: 7
     fig_height: 5
-    fig_caption: true
     dev: 'png'
-    dpi: 300
-    css: styles.css
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-___
-
-- Abstract
-- Introduction
-    - Overview of Clustering in Unsupervised Learning
-    - Significance of DBSCAN
-- Methodology
-    - Understanding DBSCAN
-      - Core Concepts
-      - Reachability and Connectivity
-      - Visualization of DBSCAN
-    - Selection of Synthetic Dataset
-- Results and Analysis
-    - Exploration of eps and minPts
-        - Effects of Varying eps
-        - Influence of minPts on cluster formation
-    - First optimization
-    - Normalization and Its Impact
-- Discussion
-    - Insights and Implications of Findings
-    - Challenges and Limitations Encountered
-- Conclusion
-    - Summary of Key Findings
-    - Future Research Directions
-    
 ___
 
 ## Abstract
@@ -76,7 +42,7 @@ ___
 
 ## Methodology
 
-___
+
 
 ### Understanding DBSCAN
 
@@ -127,7 +93,7 @@ The animation below sequentially showcases the following key stages of the DBSCA
 
 **Epsilon Neighborhoods for All Core Points**: The final segment extends the ε-neighborhood visualization to all core points in the dataset. This comprehensive view illustrates the clustering process across the entire dataset, showing how individual clusters are formed based on core and directly reachable points. It also visually represents noise points or outliers that do not belong to any cluster.
 
-![Process of DBSCAN](dbscan_animation.gif)
+![Process of DBSCAN](GIF/dbscan_animation.gif)
 
 ___
 
@@ -278,11 +244,11 @@ ___
 
 ## Results and Analysis
 
-___
+
 
 ### Exploration of eps and minPts
 
-___
+
 
 #### Effects of Varying eps
 
@@ -662,7 +628,6 @@ ___
 
 ## Discussion
 
-___
 
 
 ### Insights and Implications of Findings
@@ -680,12 +645,12 @@ ___
 
 ## Conclusion
 
-___
 
 
 ### Summary of Key Findings
 
 While normalization played a role in enhancing DBSCAN's outlier detection capabilities, its impact was somewhat limited in dataset due to the dense clustering of data points. Nevertheless, normalization provided advantages such as aiding in parameter tuning. It ensured fair feature representation and helped the adjustment of the epsilon value for optimal clustering performance. While normalization did not significantly affect the outcomes, it supported fair feature representation and better parameter optimization (as mentioned earlier, to be researched in next attempts).
+
 ___
 
 

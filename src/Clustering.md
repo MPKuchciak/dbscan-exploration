@@ -288,9 +288,7 @@ distinct clusters are merged into a single cluster or where sparse
 points are incorrectly included in nearby clusters. This can mask the
 true diversity and distribution of the data points.
 
-![](Clustering_files/figure-gfm/eps%20high-1.png)<!-- -->
-
-------------------------------------------------------------------------
+![](Clustering_files/figure-gfm/eps%20high-1.png)<!-- --> \_\_\_
 
 #### Influence of minPts on Cluster Formation
 

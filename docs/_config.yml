@@ -33,4 +33,4 @@ include:
 
 
   # Set the homepage to docs/Clustering.md
-home: "/Clustering.md"
+home: "Clustering.md"
