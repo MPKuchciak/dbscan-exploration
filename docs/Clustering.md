@@ -1,5 +1,3 @@
-DBSCAN: Density-Based Spatial Clustering of Applications with Noise,
-Technique Exploration
 ================
 Maciej Kuchciak
 January 2024
@@ -31,7 +29,7 @@ January 2024
   - [Summary of Key Findings](#summary-of-key-findings)
   - [Future Research Directions](#future-research-directions)
 
-------------------------------------------------------------------------
+
 
 ## Abstract
 
@@ -47,7 +45,7 @@ of the technique will be used for This research.
 The methodology includes a parameter optimization process highlighting
 the sensitivity of DBSCAN to the used parameters (epsilon and minPts).
 
-------------------------------------------------------------------------
+
 
 ## Introduction
 
@@ -58,7 +56,7 @@ It involves organizing a set of objects to ensure that items in the same
 group, or cluster, are more similar to each other than to those in other
 groups or clusters.
 
-------------------------------------------------------------------------
+
 
 ### Significance of DBSCAN
 
@@ -67,7 +65,7 @@ stands out among clustering algorithms for its ability to find arbitrary
 shaped clusters and its robustness to outliers, which often pose
 significant challenges in real-world data analysis.
 
-------------------------------------------------------------------------
+
 
 ## Methodology
 
@@ -80,7 +78,7 @@ or density threshold alone. Its effectiveness in identifying outliers or
 noise and its requirement of only two parameters (epsilon (ε) and
 minimum points (minPts)) make it versatile and widely applicable.
 
-------------------------------------------------------------------------
+
 
 #### Core Concepts
 
@@ -111,7 +109,7 @@ points, possibly except for q.
 from any other point based on the specified parameters of the clustering
 algorithm are considered noise or outliers.
 
-------------------------------------------------------------------------
+
 
 #### Reachability and Connectivity
 
@@ -125,7 +123,7 @@ point from which both are reachable, based on the direct reachability
 criterion. This concept ensures that all points in a cluster are
 mutually reachable, ensuring the cluster’s cohesion (compactness).
 
-------------------------------------------------------------------------
+
 
 #### Visualization of DBSCAN
 
@@ -155,7 +153,7 @@ outliers that do not belong to any cluster.
 <figcaption aria-hidden="true">Process of DBSCAN</figcaption>
 </figure>
 
-------------------------------------------------------------------------
+
 
 ### Selection of Synthetic Dataset
 
