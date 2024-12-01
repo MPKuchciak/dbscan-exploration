@@ -21,27 +21,19 @@ DBSCAN is a clustering algorithm that excels at identifying clusters of varying 
 ## Project Files
 
 ```bash
-DBSCANExploration/
-├── README.md                     # Project overview and instructions
-├── LICENSE                       # License file for the project
-├── .gitignore                    # List of files/folders ignored in version control
-├── .gitattributes                # Git settings for line endings and other attributes
-├── DBSCANExploration.Rproj       # R project file for easy setup in RStudio
-├── src/                          # Source files for analysis
-│   ├── Clustering.Rmd            # Main RMarkdown file for DBSCAN analysis
-│   ├── Clustering.md             # Generated Markdown output (without adjustments for GitHub Pages)
-│   ├── Clustering_files/         # Auto-generated figures and images from RMarkdown
-│   └── R.File/                   # Folder for R script outputs from purling RMarkdown
-│       ├── main.R                # Script to purl Clustering.Rmd into R code
-│       └── Clustering.R          # Auto-generated R code extracted from Clustering.Rmd
-├── docs/                         # GitHub Pages website files
-│   ├── index.md                  # Main page for GitHub Pages site (based on Clustering.md)
-│   ├── _config.yml               # Jekyll configuration for GitHub Pages
-│   ├── Clustering_files/         # Auto-generated figures and images for GitHub Pages
-│   └── images/                   # Additional images for the website
-├── images/                       # Extra project images (plots, figures, etc.)
-│   └── dbscan_clustering_example.gif # Animation illustrating the clustering process
-
+dbscan-exploration/
+├── README.md
+├── LICENSE
+├── DBSCAN.Rproj
+├── .gitignore
+├── Clustering.Rmd
+├── docs/
+│   ├── _config.yml                # Jekyll config for GitHub Pages
+│   ├── Clustering.md              # Your main page
+│   ├── Clustering_files/          # Figures and generated files
+│   └── images/                    # Extra project images
+└── Clustering_files/
+    └── figure-gfm/                # Generated figures
 ``` 
 
 ## Getting Started
