@@ -1,4 +1,3 @@
-================
 Maciej Kuchciak
 January 2024
 
@@ -357,7 +356,7 @@ for that, the results did not differ that much (usage of normal, based
 on real-life data datasets or with more sparsed data would be
 recommended in the future)
 
-------------------------------------------------------------------------
+
 
 ## Discussion
 
@@ -376,7 +375,7 @@ initially created with small margin of differences in distances between
 points so It Does not show the full potential of normalization and
 should be researched in future approaches.
 
-------------------------------------------------------------------------
+
 
 ### Challenges and Limitations Encountered
 
@@ -389,7 +388,7 @@ which may not always be readily available. The dataset was not that big
 so the processes were not taking much time; it is hard to evaluate the
 speed of algorithm and its scalability based on this research.
 
-------------------------------------------------------------------------
+
 
 ## Conclusion
 
@@ -403,7 +402,7 @@ feature representation and helped the adjustment of the epsilon value
 for optimal clustering performance. While normalization did not
 significantly affect the outcomes, it supported fair feature
 representation and better parameter optimization (as mentioned earlier,
-to be researched in next attempts). \_\_\_
+to be researched in next attempts). 
 
 ### Future Research Directions
 
