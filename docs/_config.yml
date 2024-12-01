@@ -1,0 +1,31 @@
+title: "T-SNE: A Dimensionality Reduction Technique Exploration"
+description: "Exploring t-SNE using the MNIST dataset"
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  math_engine_opts:
+    delimiters:
+      inline: ["$", "$"]    # Use $ for inline math
+      block: ["$$", "$$"]   # Use $$ for block math
+plugins:
+  - jekyll-mathjax
+
+# Exclude unnecessary files from GitHub Pages build
+exclude:
+  - "*.Rhistory"
+  - "*.Rapp.history"
+  - "*.RData"
+  - "*.tar.gz"
+  - "*.Rcheck/"
+  - ".gitignore"
+  - ".gitattributes"
+  - "cache/"
+  - "vignettes/*.html"
+  - "vignettes/*.pdf"
+
+# Include essential directories
+include:
+  - docs
+  - Dimension_reduction_files/figure-gfm
+  - images

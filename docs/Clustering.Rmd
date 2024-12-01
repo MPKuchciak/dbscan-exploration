@@ -1,0 +1,658 @@
+---
+title: "DBSCAN: Density-Based Spatial Clustering of Applications with Noise, Technique Exploration"
+author: "Maciej Kuchciak"
+date: "January 2024"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 4
+    fig_width: 7
+    fig_height: 5
+    dev: 'png'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+___
+
+## Abstract
+
+This study focuses on the exploration of DBSCAN (Density-Based Spatial Clustering of Applications with Noise), a non-parametric clustering algorithm known for its proficiency in **identifying clusters of varied shapes and sizes**, and its great performance in the **identifying presence of noise and outliers**. 
+
+A synthetic dataset created to emulate data that could show capabilities of the technique will be used for This research. 
+
+The methodology includes a parameter optimization process highlighting the sensitivity of DBSCAN to the used parameters (epsilon and minPts). 
+
+___
+
+## Introduction
+
+### Overview of clustering in Unsupervised Learning
+
+Clustering is a fundamental technique in unsupervised machine learning. It involves organizing a set of objects to ensure that items in the same group, or cluster, are more similar to each other than to those in other groups or clusters.
+
+___
+
+### Significance of DBSCAN
+ 
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise) stands out among clustering algorithms for its ability to find arbitrary shaped clusters and its robustness to outliers, which often pose significant challenges in real-world data analysis.
+
+___
+
+## Methodology
+
+
+
+### Understanding DBSCAN
+
+
+
+DBSCAN is a popular clustering algorithm that excels in discovering clusters of varying shapes and sizes in a dataset, differentiating it from algorithms that identify clusters based on distance from centroid or density threshold alone. Its effectiveness in identifying outliers or noise and its requirement of only two parameters (epsilon (ε) and minimum points (minPts)) make it versatile and widely applicable.
+
+___
+
+
+#### Core Concepts
+
+
+**Epsilon (ε)**: This parameter sets the radius of the neighborhood around each point. It defines the distance within which points are considered to be in the same area
+
+**Minimum Points (minPts)**: This parameter is the minimum number of points required to form a region, which is considered a cluster.
+
+Based on these parameters, points in the dataset are classified as:
+
+***Core Points***: A point is a core point if at least minPts points are within distance ε of it, including the point itself. These points are essential for the formation of a cluster.
+
+***Directly Reachable Points***: A point q is reachable from another point p if q is within distance ε from p, and p is a core point. This relation is not symmetric, meaning q being directly reachable from p does not necessarily imply p is directly reachable from q.
+
+***Reachable Points***: A point q is reachable from p if there exists a path p1, ..., pn from p to q, where each consecutive point is directly reachable. This chain implies that the intermediate points are core points, possibly except for q.
+
+***Noise Points***: Noise Points: Points that are not directly reachable from any other point based on the specified parameters of the clustering algorithm are considered noise or outliers.
+
+___
+
+
+#### Reachability and Connectivity
+
+
+**Reachability**: It is defined in terms of direct reachability, where a point is considered reachable from another if there exists a sequence of points connecting the two, with each point being directly reachable from the preceding one.
+
+**Connectivity**: Two points are density-connected if there exists a point from which both are reachable, based on the direct reachability criterion. This concept ensures that all points in a cluster are mutually reachable, ensuring the cluster's cohesion (compactness).
+
+___
+
+
+#### Visualization of DBSCAN
+
+The animation below sequentially showcases the following key stages of the DBSCAN clustering process:
+
+**Initial Clustering Attempt**: The first part of the animation displays the initial state of the data before clustering, providing a visual baseline of the dataset's distribution. This stage sets the context for DBSCAN's impact.
+
+**Epsilon Neighborhood for a Core Point**: Next, the animation highlights the ε-neighborhood around a selected core point. This visualization demonstrates how the epsilon parameter influences the identification of directly reachable points. It emphasizes the role of ε in determining the density requirement for cluster formation.
+
+**Epsilon Neighborhoods for All Core Points**: The final segment extends the ε-neighborhood visualization to all core points in the dataset. This comprehensive view illustrates the clustering process across the entire dataset, showing how individual clusters are formed based on core and directly reachable points. It also visually represents noise points or outliers that do not belong to any cluster.
+
+![Process of DBSCAN](GIF/dbscan_animation.gif)
+
+___
+
+### Selection of Synthetic Dataset
+
+The synthetic dataset was generated using the following approach:
+
+- **Cluster Centers and Sizes:** Defined specific centers for each cluster and determined the number of points (sizes) to simulate varying densities.
+
+- **Diverse Shapes:** Utilized mathematical functions and distributions to create clusters of different shapes, such as circular ("ring" shape) and sinusoidal patterns, to challenge the clustering algorithm beyond simple spherical clusters.
+
+- **Noise and Outliers:** Added random noise and outliers to assess DBSCAN's robustness in identifying and segregating these elements from the main clusters.
+
+
+```{r libraries, echo=TRUE, message=FALSE, warning=FALSE}
+library(dbscan) # For clustering
+library(ggplot2) # For plotting # graphs made with both ggplot2 and plot
+library(MASS) # For generating synthetic data using multivariate normal distribution
+```
+```{r seed, echo=TRUE}
+# Set a seed for reproducibility
+set.seed(420)
+```
+```{r synthetic data creation, echo=TRUE}
+# Define the cluster centers and sizes
+centers <- matrix(c(25, 25, -25, -25, 25, -20, -20, 20), ncol = 2, byrow = TRUE) 
+sizes <- c(1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 250, 100)
+
+# Generate synthetic clusters with different characteristics
+cluster1 <- mvrnorm(n = sizes[1], mu = centers[1,], Sigma = matrix(c(9, 2, 2, 9), ncol = 2))
+cluster2 <- mvrnorm(n = sizes[2], mu = centers[2,], Sigma = matrix(c(12, 0.5, 0.5, 4), ncol = 2))
+cluster3 <- mvrnorm(n = sizes[3], mu = centers[3,], Sigma = matrix(c(6, 0.3, 0.3, 18), ncol = 2))
+cluster4 <- mvrnorm(n = sizes[4], mu = centers[4,], Sigma = matrix(c(15, 0.1, 0.1, 15), ncol = 2))
+
+# Cluster 5: Sine curve distribution
+x_values <- seq(-40, -20, length.out = 1000)
+y_values <- sin(x_values) * 2 + rnorm(1000, mean = 0, sd = 0.2) # Adding some noise to the sine curve
+cluster5 <- cbind(x_values, y_values)
+
+# Cluster 6 & 7: Intersecting clusters
+cluster6 <- mvrnorm(n = 1000, mu = c(-5, -5), Sigma = matrix(c(7, 1.3, 1.3, 8), ncol = 2))
+cluster7 <- mvrnorm(n = 1000, mu = c(-3, -7), Sigma = matrix(c(7, 1.3, 1.3, 5), ncol = 2))
+
+# Cluster 8: Points along an arc
+theta <- runif(1000, min = pi, max = 2 * pi)
+r <- 5
+cluster8 <- cbind(r * cos(theta) + 5, r * sin(theta) + 15)
+
+# Cluster 9: Points in a "moon" shape
+theta <- runif(1000, min = 0, max = pi)
+r <- 10 + runif(1000, min = -1, max = 1)
+cluster9 <- cbind(r * cos(theta) + 30, r * sin(theta))
+
+# Cluster 10: Points in a "ring" shape around all other clusters
+theta <- runif(1000, min = 0, max = 2 * pi)
+r_inner <- 48
+r_outer <- 52
+r <- sqrt(runif(1000, min = r_inner^2, max = r_outer^2))
+cluster10 <- cbind(r * cos(theta), r * sin(theta))
+```
+
+
+Merging clusters and introducing both noise and outliers 
+
+- Noise consists of random or irrelevant data points that don't form any clear patterns and typically represent background variability. 
+- Outliers, are data points that differ from other observations by a huge margin, potentially indicating unique or rare phenomena within the dataset.
+
+
+```{r noise and outliers, merge, echo=TRUE}
+# Combine all clusters into a single dataset
+data <- rbind(cluster1, cluster2, cluster3, cluster4, cluster5, cluster6, cluster7, cluster8, cluster9, cluster10)
+
+# Generate noise and outliers within a limited range
+noise <- cbind(runif(sizes[11], min = -60, max = 60), runif(sizes[11], min = -60, max = 60))
+outliers <- cbind(rnorm(sizes[12], mean = 0, sd = 20), rnorm(sizes[12], mean = 0, sd = 20))
+
+# Combine clusters, noise, and outliers
+data <- rbind(data, noise, outliers)
+```
+
+The output of the code above for plotting is a two-dimensional scatter plot, visually representing a synthetic dataset designed for evaluating the DBSCAN clustering algorithm. 
+
+Plot below showcases a variety of clusters, each differentiated by unique colors, indicating distinct groupings within the data. 
+
+Additionally, noise and outliers are also highlighted, with noise points depicted in light gray and outliers in dark gray
+
+```{r plotting, echo=FALSE, out.width='100%', fig.align='center'}
+
+# Create a factor for the labels
+labels <- factor(
+  c(
+    rep("Cluster 1", sizes[1]), rep("Cluster 2", sizes[2]), rep("Cluster 3", sizes[3]), 
+    rep("Cluster 4", sizes[4]), rep("Cluster 5", sizes[5]), rep("Cluster 6", sizes[6]), 
+    rep("Cluster 7", sizes[7]), rep("Cluster 8", sizes[8]), rep("Cluster 9", sizes[9]), 
+    rep("Cluster 10", sizes[10]), rep("Noise", sizes[11]), rep("Outliers", sizes[12])
+  ), 
+  levels = c(
+    "Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5", "Cluster 6", "Cluster 7", "Cluster 8", "Cluster 9", "Cluster 10", "Noise", "Outliers"
+  )
+)
+
+# Define colors for the plot, ensuring unique colors for each cluster
+color_palette <- c(
+  "black", "red", "green3", "blue", "cyan", "orange", "yellow", 
+  "brown", "violet", "magenta", "lightgray", "darkgray"
+)
+names(color_palette) <- levels(labels)
+
+# Set the margins (bottom, left, top, right)
+par(mar=c(5, 4, 4, 8))
+
+# Plot the data with unique colors for each cluster
+plot(data, col = color_palette[labels], pch = 16, xlab = "Feature 1", ylab = "Feature 2",
+     main = "Synthetic Dataset for DBSCAN", xaxt='n', yaxt='n')
+
+# Add custom axes
+axis(1, at=seq(-60, 60, by=10))
+axis(2, at=seq(-60, 60, by=10))
+
+# Add the legend inside the plot area, to the right
+legend(x = "topright", inset = c(0, 0), legend = levels(labels), fill = color_palette, 
+       title = "Legend", cex = 0.8, xpd = TRUE, horiz = FALSE)
+```
+
+Additionaly Hopkins statistics was used to assess whether the data has a clustering tendency. 
+The higher values the better.
+
+```{r hopkins, echo=FALSE, out.width='100%', fig.align='center', message=FALSE, warning=FALSE}
+
+library(hopkins)
+
+set.seed(420) # for reproducibility
+
+# Calculate the Hopkins statistic
+hopkins_stat <- hopkins(data[, c("x_values", "y_values")])
+
+# Print the Hopkins statistic
+print(hopkins_stat)
+
+```
+
+The Hopkins statistic value of approximately 0.953 suggests a 
+high likelihood that the dataset has a significant clustering tendency. 
+This means the data is likely not uniformly distributed and has potential clusters. 
+Which means that synthetic data for clustering was created successfully.
+
+___
+
+## Results and Analysis
+
+
+
+### Exploration of eps and minPts
+
+
+
+#### Effects of Varying eps
+
+
+
+Too low eps can cause over-segmentation. 
+It is when algorithm detects too many clusters. 
+This often results in meaningful clusters being split into smaller, disjointed parts, with potentially more points classified as noise. 
+
+Eps of 0.5 was chosen for lower end to show this problem.
+
+```{r eps low what, include=FALSE, results='hide'}
+# Install required packages if not already installed
+# dbscan for clustering, ggplot2 for plotting, MASS for generating multivariate normal distributions
+if (!requireNamespace("dbscan", quietly = TRUE)) install.packages("dbscan")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("MASS", quietly = TRUE)) install.packages("MASS")
+
+# Load packages
+library(dbscan) # For clustering
+library(ggplot2) # For plotting
+library(MASS) # For generating synthetic data using multivariate normal distribution
+
+
+# Set a seed for reproducibility
+set.seed(420)
+# Define the cluster centers and sizes
+centers <- matrix(c(25, 25, -25, -25, 25, -20, -20, 20), ncol = 2, byrow = TRUE) 
+sizes <- c(1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 250, 100)
+
+# Generate synthetic clusters with different characteristics
+cluster1 <- mvrnorm(n = sizes[1], mu = centers[1,], Sigma = matrix(c(9, 2, 2, 9), ncol = 2))
+cluster2 <- mvrnorm(n = sizes[2], mu = centers[2,], Sigma = matrix(c(12, 0.5, 0.5, 4), ncol = 2))
+cluster3 <- mvrnorm(n = sizes[3], mu = centers[3,], Sigma = matrix(c(6, 0.3, 0.3, 18), ncol = 2))
+cluster4 <- mvrnorm(n = sizes[4], mu = centers[4,], Sigma = matrix(c(15, 0.1, 0.1, 15), ncol = 2))
+
+# Cluster 5: Sine curve distribution
+x_values <- seq(-40, -20, length.out = 1000)
+y_values <- sin(x_values) * 2 + rnorm(1000, mean = 0, sd = 0.2) # Adding some noise to the sine curve
+cluster5 <- cbind(x_values, y_values)
+
+# Cluster 6 & 7: Intersecting clusters
+cluster6 <- mvrnorm(n = 1000, mu = c(-5, -5), Sigma = matrix(c(7, 1.3, 1.3, 8), ncol = 2))
+cluster7 <- mvrnorm(n = 1000, mu = c(-3, -7), Sigma = matrix(c(7, 1.3, 1.3, 5), ncol = 2))
+
+# Cluster 8: Points along an arc
+theta <- runif(1000, min = pi, max = 2 * pi)
+r <- 5
+cluster8 <- cbind(r * cos(theta) + 5, r * sin(theta) + 15)
+
+# Cluster 9: Points in a "moon" shape
+theta <- runif(1000, min = 0, max = pi)
+r <- 10 + runif(1000, min = -1, max = 1)
+cluster9 <- cbind(r * cos(theta) + 30, r * sin(theta))
+
+# Cluster 10: Points in a "ring" shape around all other clusters
+theta <- runif(1000, min = 0, max = 2 * pi)
+r_inner <- 48
+r_outer <- 52
+r <- sqrt(runif(1000, min = r_inner^2, max = r_outer^2))
+cluster10 <- cbind(r * cos(theta), r * sin(theta))
+
+# Combine all clusters into a single dataset
+data <- rbind(cluster1, cluster2, cluster3, cluster4, cluster5, cluster6, cluster7, cluster8, cluster9, cluster10) #, cluster2, cluster3, cluster4, cluster5, cluster6, cluster7, cluster8, cluster9, 
+
+# Generate noise and outliers within a limited range
+noise <- cbind(runif(sizes[11], min = -60, max = 60), runif(sizes[11], min = -60, max = 60))
+outliers <- cbind(rnorm(sizes[12], mean = 0, sd = 20), rnorm(sizes[12], mean = 0, sd = 20))
+
+# Combine clusters, noise, and outliers
+data <- rbind(data, noise, outliers)
+
+# Create a factor for the labels
+labels <- factor(
+  c(
+    rep("Cluster 1", sizes[1]), rep("Cluster 2", sizes[2]), rep("Cluster 3", sizes[3]), 
+    rep("Cluster 4", sizes[4]), rep("Cluster 5", sizes[5]), rep("Cluster 6", sizes[6]), 
+    rep("Cluster 7", sizes[7]), rep("Cluster 8", sizes[8]), rep("Cluster 9", sizes[9]), 
+    rep("Cluster 10", sizes[10]), rep("Noise", sizes[11]), rep("Outliers", sizes[12])
+  ), 
+  levels = c(
+    "Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4", "Cluster 5", "Cluster 6", "Cluster 7", "Cluster 8", "Cluster 9", "Cluster 10", "Noise", "Outliers"
+  )
+)
+
+# Define colors for the plot, ensuring unique colors for each cluster
+color_palette <- c(
+  "black", "red", "green3", "blue", "cyan", "orange", "yellow", 
+  "brown", "violet", "magenta", "lightgray", "darkgray"
+)
+names(color_palette) <- levels(labels)
+
+# Set the margins (bottom, left, top, right)
+par(mar=c(5, 4, 4, 8))
+
+# Plot the data with unique colors for each cluster
+plot(data, col = color_palette[labels], pch = 16, xlab = "Feature 1", ylab = "Feature 2",
+     main = "Enhanced Synthetic Dataset for DBSCAN with Diverse Clusters", xaxt='n', yaxt='n')
+
+# Add custom axes
+axis(1, at=seq(-60, 60, by=10))
+axis(2, at=seq(-60, 60, by=10))
+
+# Add the legend inside the plot area, to the right
+legend(x = "topright", inset = c(0, 0), legend = levels(labels), fill = color_palette,
+       title = "Legend", cex = 0.8, xpd = TRUE, horiz = FALSE)
+
+
+#! -----------------------------------------------------------------------------
+
+```
+
+```{r eps low 2, echo=FALSE}
+#over SEGMENTATION
+
+# Convert the matrix 'data' to a data frame
+data_df <- as.data.frame(data)
+names(data_df) <- c("x_values", "y_values")
+
+
+# need to choose suitable values for eps and minPts
+dbscan_result <- dbscan(data_df, eps = 0.5, minPts = 5)
+
+# add cluster assignments to data frame for plotting
+data_df$cluster <- dbscan_result$cluster
+
+# Convert cluster assignments to factors for coloring in the plot
+data_df$cluster <- as.factor(data_df$cluster)
+
+# Plot the results using ggplot2
+ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Clusters") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results Low Epsilon")
+
+#! -----------------------------------------------------------------------------
+
+```
+
+On the other hand, too high eps can cause under-segmentation. 
+It's when distinct clusters are merged into a single cluster or where sparse points are incorrectly included in nearby clusters. 
+This can mask the true diversity and distribution of the data points.
+
+```{r eps high, echo=FALSE}
+# under segmentation
+
+# Convert the matrix 'data' to a data frame
+data_df <- as.data.frame(data)
+names(data_df) <- c("x_values", "y_values")
+
+# need to choose suitable values for eps and minPts
+library(dbscan)
+dbscan_result <- dbscan(data_df, eps = 100, minPts = 5)
+
+# Add cluster assignments to  data frame for plotting
+data_df$cluster <- dbscan_result$cluster
+
+# Convert cluster assignments to factors for coloring in the plot
+data_df$cluster <- as.factor(data_df$cluster)
+
+# Plot the results using ggplot2
+library(ggplot2)
+ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Clusters") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results High Epsilon")
+
+```
+___
+
+
+#### Influence of minPts on Cluster Formation
+
+As a rule of thumb, a starting point for minPts can be derived from the dimensionality of the dataset. A common suggestion is to set minPts to at least the dimensionality of the data plus one (D + 1), where D is the number of dimensions. Sometimes it can also be choosen as D*2.
+
+A low value for minPts can lead to a higher likelihood of identifying noise points as part of clusters, reducing the algorithm's ability to filter out outliers. It may also result in the detection of numerous small clusters, reflecting a more fragmented clustering structure than actually present.
+
+```{r low minPts, echo=FALSE}
+# low minPts
+
+# Convert the matrix 'data' to a data frame
+data_df <- as.data.frame(data)
+names(data_df) <- c("x_values", "y_values")
+
+
+# need to choose suitable values for eps and minPts
+dbscan_result <- dbscan(data_df, eps = 2.5, minPts = 2)
+
+# add cluster assignments to data frame for plotting
+data_df$cluster <- dbscan_result$cluster
+
+# Convert cluster assignments to factors for coloring in the plot
+data_df$cluster <- as.factor(data_df$cluster)
+
+# Plot the results using ggplot2
+ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Clusters") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results Low MinPts")
+```
+
+High minPts value increases the robustness of the algorithm to noise by requiring a larger number of points to establish a cluster. However, this can also prevent the formation of valid clusters in less dense regions of the dataset, potentially overlooking significant but less dense structures.
+
+```{r high minPts, echo=FALSE}
+# high minPts
+
+# Convert the matrix 'data' to a data frame
+data_df <- as.data.frame(data)
+names(data_df) <- c("x_values", "y_values")
+
+# Run DBSCAN
+# You will need to choose suitable values for eps and minPts
+library(dbscan)
+dbscan_result <- dbscan(data_df, eps = 2.5, minPts = 15)
+
+# Add cluster assignments to data frame for plotting
+data_df$cluster <- dbscan_result$cluster
+
+# Convert cluster assignments to factors for coloring in the plot
+data_df$cluster <- as.factor(data_df$cluster)
+
+# Plot the results using ggplot2
+library(ggplot2)
+ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Clusters") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results High MinPts")
+```
+
+### First Optimization
+
+In optimizing DBSCAN parameters, minPts was set to twice the dataset's dimensionality (4 for a 2 D dataset). The optimal epsilon was determined using a k-distance graph with k set to minPts - 1 (3 in this case), identifying the "elbow" point to define the radius for neighborhood searches. 
+
+```{r elbow first optimal scan, echo=FALSE}
+#ELBOW MANUAL
+
+library(dbscan)
+
+#data frame with x_values and y_values
+data_matrix <- as.matrix(data_df[, c("x_values", "y_values")])
+
+k <- 3  # This is usually set to minPts - 1
+kdist <- kNNdist(data_matrix, k)
+kdist_sorted <- sort(kdist, decreasing = FALSE)
+
+# Plot k-distance graph to help choose eps
+plot(kdist_sorted, type = "l", main = "k-distance graph",
+     xlab = "Points", ylab = "k-distance", col = "blue", lwd = 2)
+
+# Add a horizontal line at the point you believe is the "elbow"
+# This is typically done by visual inspection
+abline(h = 0.5, col = "red", lwd = 2) # You might need to change the 'h' value
+
+plot(kdist_sorted, type = "l", main = "k-distance graph",
+     xlab = "Points", ylab = "k-distance", col = "blue", lwd = 2, ylim = c(0, 3))
+abline(h = 0.5, col = "red", lwd = 2)
+abline(h = 2.5, col = "green", lwd = 2) 
+
+
+
+```
+
+As "elbow" point is not clear, the graph was zoomed in and then the epsilon was checked iteratively between values 1 and 2.5.
+
+For epsilon = 2.5 and minPts = 4 (2*2) parameters, the result was the closes to syntheticly created dataset. 
+Unfortunetelly the intersected clusters were not properly discovered, but that's logical, the distance between points there was too small.
+
+```{r optimal db scan, echo=FALSE}
+# optimal 
+
+# Convert the matrix 'data' to a data frame
+data_df <- as.data.frame(data)
+names(data_df) <- c("x_values", "y_values")
+
+# Run DBSCAN
+# need to choose suitable values for eps and minPts
+library(dbscan)
+dbscan_result <- dbscan(data_df, eps = 2.5, minPts = 4)
+
+# Add cluster assignments for plotting
+data_df$cluster <- dbscan_result$cluster
+
+# Convert cluster assignments to factors for coloring in the plot
+data_df$cluster <- as.factor(data_df$cluster)
+
+# Plot the results using ggplot2
+library(ggplot2)
+ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Clusters") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results")
+
+
+
+```
+
+### Normalization and Its Impact
+
+Normalization was used to ensure that all features contribute equally to the distance calculations in the clustering algorithm. Just to see wether it would help with accesing better clusters, or worsen the results (originally, scale was very similar so it should not matter that much).
+
+Firsly, the non-optimized version was run, and k-distance graph was checked for epsilon value.
+
+```{r normalize k-distance, echo=FALSE}
+#NORMALIZATION
+
+# Normalize the data
+data_normalized <- as.data.frame(scale(data_df[, c("x_values", "y_values")]))
+
+# Run DBSCAN on the normalized data
+dbscan_result <- dbscan(data_normalized, eps = 0.4, minPts = 4)
+
+# Add cluster assignments to the normalized data frame for plotting
+data_normalized$cluster <- as.factor(dbscan_result$cluster)
+
+# Plot the results using ggplot2
+library(ggplot2)
+ggplot(data_normalized, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Cluster") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results on Normalized Data")
+
+
+# Select only the numeric columns for x_values and y_values
+data_normalized_numeric <- data_normalized[, c("x_values", "y_values")]
+
+# Convert the selected data to a matrix
+data_normalized_matrix <- as.matrix(data_normalized_numeric)
+
+# Calculate the k-distance using the numeric matrix
+k <- 4  # This should be set to minPts - 1
+kdist_normalized <- dbscan::kNNdist(data_normalized_matrix, k)
+
+# Sort the k-distances
+kdist_sorted <- sort(kdist_normalized)
+
+# Plot the k-distance graph
+plot(kdist_sorted, type = "l", main = "k-distance graph",
+     xlab = "Points", ylab = "k-distance", col = "blue", lwd = 2, ylim = c(0, 0.25))
+abline(h = 0.01, col = "red", lwd = 2)
+abline(h = 0.2, col = "green", lwd = 2) # Adjust 'h' value as needed
+```
+
+Based on the graph of k-distance, the values from range 0.01 to 0.2 were iteratively checked, for best outcome compared with synthetic dataset graph and the previous non normalized clustering graph.
+
+```{r optimized everything, echo=FALSE}
+#NORMALIZATION
+
+# Normalize the data
+data_normalized <- as.data.frame(scale(data_df[, c("x_values", "y_values")]))
+#data_normalized
+# Run DBSCAN on the normalized data
+library(dbscan)
+dbscan_result <- dbscan(data_normalized, eps = 0.115, minPts = 4)
+#dbscan_result$cluster
+# Add cluster assignments to the normalized data frame for plotting
+data_normalized$cluster <- as.factor(dbscan_result$cluster)
+
+# Plot the results using ggplot2
+library(ggplot2)
+ggplot(data_normalized, aes(x = x_values, y = y_values, color = cluster)) + 
+  geom_point(alpha = 0.8) + 
+  scale_color_discrete(name = "Cluster") + 
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results on Normalized Data")
+```
+
+The results post-normalization were a bit better, we did remove one cluster that was supposed (?) to discover some outliers, and after normalization it did thse points added into outliers cluster, but except for that, the results did not differ that much (usage of normal, based on real-life data datasets or with more sparsed data would be recommended in the future)
+
+___
+
+
+## Discussion
+
+
+
+### Insights and Implications of Findings
+
+The application of DBSCAN to normalized data (also to non-normalized data) revealed distinct clusters that correspond to the inherent grouping within synthetic dataset. This demonstrates the algorithm's ability to detect clusters of various shapes and densities, showing its versatility in different data contexts and ability to discover noise and outliers proficiently (although not differentiating between them, but that may be due to the choice of dataset). The normalization process proved to be a thing that Did better the performance (even if it is  only slight increase of it) of algorithm in this case, although the data was initially created with small margin of differences in distances between points so It Does not show the full potential of normalization and should be researched in future approaches.
+
+___
+
+### Challenges and Limitations Encountered
+
+A key challenge in this analysis was determining the optimal epsilon and minPts parameters. 
+The choice of these parameters is a main factor that affects the number and composition of the clusters. Furthermore, DBSCAN's sensitivity to these settings poses a limitation, as it requires domain knowledge or heuristics to guide the selection process, which may not always be readily available. The dataset was not that big so the processes were not taking much time; it is hard to evaluate the speed of algorithm and its scalability based on this research.
+
+___
+
+## Conclusion
+
+
+
+### Summary of Key Findings
+
+While normalization played a role in enhancing DBSCAN's outlier detection capabilities, its impact was somewhat limited in dataset due to the dense clustering of data points. Nevertheless, normalization provided advantages such as aiding in parameter tuning. It ensured fair feature representation and helped the adjustment of the epsilon value for optimal clustering performance. While normalization did not significantly affect the outcomes, it supported fair feature representation and better parameter optimization (as mentioned earlier, to be researched in next attempts).
+___
+
+
+### Future Research Directions
+
+Future work may explore automated methods for parameter selection, such as utilizing silhouette scores or other cluster validation metrics. Additionally, investigating the impact of normalization techniques beyond basic scaling, like robust scalers or non-linear transformations, could provide further insights into the preprocessing requirements of DBSCAN in diverse datasets. Using regular real-life dataset instead of synthetically created one could also give much more options to use such techniques.
