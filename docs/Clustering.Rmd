@@ -252,8 +252,6 @@ ___
 
 #### Effects of Varying eps
 
-
-
 Too low eps can cause over-segmentation. 
 It is when algorithm detects too many clusters. 
 This often results in meaningful clusters being split into smaller, disjointed parts, with potentially more points classified as noise. 
@@ -419,6 +417,7 @@ ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) +
   ggtitle("DBSCAN Clustering Results High Epsilon")
 
 ```
+
 ___
 
 
@@ -650,6 +649,7 @@ ___
 ### Summary of Key Findings
 
 While normalization played a role in enhancing DBSCAN's outlier detection capabilities, its impact was somewhat limited in dataset due to the dense clustering of data points. Nevertheless, normalization provided advantages such as aiding in parameter tuning. It ensured fair feature representation and helped the adjustment of the epsilon value for optimal clustering performance. While normalization did not significantly affect the outcomes, it supported fair feature representation and better parameter optimization (as mentioned earlier, to be researched in next attempts).
+
 ___
 
 

@@ -252,8 +252,6 @@ ___
 
 #### Effects of Varying eps
 
-
-
 Too low eps can cause over-segmentation. 
 It is when algorithm detects too many clusters. 
 This often results in meaningful clusters being split into smaller, disjointed parts, with potentially more points classified as noise. 
@@ -419,6 +417,7 @@ ggplot(data_df, aes(x = x_values, y = y_values, color = cluster)) +
   ggtitle("DBSCAN Clustering Results High Epsilon")
 
 ```
+
 ___
 
 
