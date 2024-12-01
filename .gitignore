@@ -43,7 +43,8 @@ figure/
 
 # Keep images in the following folders for GitHub Pages
 !docs/images/*.png
-!docs/Dimension_reduction_files/figure-gfm/*.png
+!docs/Clustering_files/figure-gfm/*.png
+!docs/Clustering_files/figure-gfm/*.gif   # If you have GIFs like dbscan_animation.gif
 
 # R Environment Variables
 .Renviron
