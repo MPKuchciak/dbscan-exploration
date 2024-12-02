@@ -31,8 +31,6 @@ January 2024
   - [Summary of Key Findings](#summary-of-key-findings)
   - [Future Research Directions](#future-research-directions)
 
-------------------------------------------------------------------------
-
 ## Abstract
 
 This study focuses on the exploration of DBSCAN (Density-Based Spatial
@@ -47,8 +45,6 @@ of the technique will be used for This research.
 The methodology includes a parameter optimization process highlighting
 the sensitivity of DBSCAN to the used parameters (epsilon and minPts).
 
-------------------------------------------------------------------------
-
 ## Introduction
 
 ### Overview of clustering in Unsupervised Learning
@@ -58,16 +54,12 @@ It involves organizing a set of objects to ensure that items in the same
 group, or cluster, are more similar to each other than to those in other
 groups or clusters.
 
-------------------------------------------------------------------------
-
 ### Significance of DBSCAN
 
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
 stands out among clustering algorithms for its ability to find arbitrary
 shaped clusters and its robustness to outliers, which often pose
 significant challenges in real-world data analysis.
-
-------------------------------------------------------------------------
 
 ## Methodology
 
@@ -79,8 +71,6 @@ from algorithms that identify clusters based on distance from centroid
 or density threshold alone. Its effectiveness in identifying outliers or
 noise and its requirement of only two parameters (epsilon (ε) and
 minimum points (minPts)) make it versatile and widely applicable.
-
-------------------------------------------------------------------------
 
 #### Core Concepts
 
@@ -111,8 +101,6 @@ points, possibly except for q.
 from any other point based on the specified parameters of the clustering
 algorithm are considered noise or outliers.
 
-------------------------------------------------------------------------
-
 #### Reachability and Connectivity
 
 **Reachability**: It is defined in terms of direct reachability, where a
@@ -124,8 +112,6 @@ the preceding one.
 point from which both are reachable, based on the direct reachability
 criterion. This concept ensures that all points in a cluster are
 mutually reachable, ensuring the cluster’s cohesion (compactness).
-
-------------------------------------------------------------------------
 
 #### Visualization of DBSCAN
 
@@ -154,8 +140,6 @@ outliers that do not belong to any cluster.
 <img src="GIF/dbscan_animation.gif" alt="Process of DBSCAN" />
 <figcaption aria-hidden="true">Process of DBSCAN</figcaption>
 </figure>
-
-------------------------------------------------------------------------
 
 ### Selection of Synthetic Dataset
 
@@ -266,8 +250,6 @@ means the data is likely not uniformly distributed and has potential
 clusters. Which means that synthetic data for clustering was created
 successfully.
 
-------------------------------------------------------------------------
-
 ## Results and Analysis
 
 ### Exploration of eps and minPts
@@ -289,8 +271,6 @@ points are incorrectly included in nearby clusters. This can mask the
 true diversity and distribution of the data points.
 
 ![](Clustering_files/figure-gfm/eps%20high-1.png)<!-- -->
-
-------------------------------------------------------------------------
 
 #### Influence of minPts on Cluster Formation
 
@@ -361,8 +341,6 @@ for that, the results did not differ that much (usage of normal, based
 on real-life data datasets or with more sparsed data would be
 recommended in the future)
 
-------------------------------------------------------------------------
-
 ## Discussion
 
 ### Insights and Implications of Findings
@@ -380,8 +358,6 @@ initially created with small margin of differences in distances between
 points so It Does not show the full potential of normalization and
 should be researched in future approaches.
 
-------------------------------------------------------------------------
-
 ### Challenges and Limitations Encountered
 
 A key challenge in this analysis was determining the optimal epsilon and
@@ -392,8 +368,6 @@ requires domain knowledge or heuristics to guide the selection process,
 which may not always be readily available. The dataset was not that big
 so the processes were not taking much time; it is hard to evaluate the
 speed of algorithm and its scalability based on this research.
-
-------------------------------------------------------------------------
 
 ## Conclusion
 
@@ -408,8 +382,6 @@ for optimal clustering performance. While normalization did not
 significantly affect the outcomes, it supported fair feature
 representation and better parameter optimization (as mentioned earlier,
 to be researched in next attempts).
-
-------------------------------------------------------------------------
 
 ### Future Research Directions
 
